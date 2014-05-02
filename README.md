@@ -141,7 +141,7 @@ method.
 
 // Good
 const find = (collection, predicate, fallback) => {
-  for (let item of collection)
+  for (const item of collection)
     if (predicate(item)) return item;
 
   return fallback;
@@ -157,14 +157,14 @@ Curse.prototype.cry = function() {
 
 // Bad
 function find(collection, predicate, fallback) {
-  for (let item of collection)
+  for (const item of collection)
     if (predicate(item)) return item;
 
   return fallback;
 };
 
 const find = function(collection, predicate, fallback) {
-  for (let item of collection)
+  for (const item of collection)
     if (predicate(item)) return item;
 
   return fallback;
@@ -272,7 +272,7 @@ into implementation.
 
 // Define does not returns value since it mutates `object`.
 const define = (object, properties) => {
-  let descriptor = {};
+  const descriptor = {};
   Object.getOwnPropertyNames(properties).forEach(name => {
     descriptor[name] = Object.getOwnPropertyDescriptor(properties, name);
   });
@@ -282,7 +282,7 @@ const define = (object, properties) => {
 // `extend` is referentially transparent, as it does not
 // mutates given arguments nor things in the outer scope.
 const extend = (target, properties) => {
-  let result = Object.create(target);
+  const result = Object.create(target);
   define(result, properties);
   return result
 }
@@ -291,7 +291,7 @@ const extend = (target, properties) => {
 // This is bad because it's no longer clear if `a = define(b, c)` has
 // changed anything or not.
 const define = (object, properties) => {
-  let descriptor = {};
+  const descriptor = {};
   Object.getOwnPropertyNames(properties).forEach(name => {
     descriptor[name] = Object.getOwnPropertyDescriptor(properties, name);
   });
@@ -307,9 +307,7 @@ Do not declare function within blocks.
 // Good
 const readURIs = (uris, callback) => {
   let pending = uris.length;
-  // Using `let` to signify that output is going
-  // to be mutated.
-  let output = [];
+  const output = [];
   uris.reduce((index, uri) => {
     // Defining functions with-in the functions is ok.
     readURI(uri, content => {
@@ -326,7 +324,7 @@ const readURIs = (uris, callback) => {
 // Good
 const readURIs = (uris, callback) => {
   let pending = uri.length;
-  let results = [];
+  const results = [];
   const makeFetchHandler = index =>
     content => {
       output[index] = content;
@@ -337,7 +335,7 @@ const readURIs = (uris, callback) => {
     }
 
   let index = 0;
-  let count = uris.length;
+  const count = uris.length;
   while (index < count) {
     readURI(uri, makeFetchHandler(index));
     index = index + 1;
@@ -347,13 +345,11 @@ const readURIs = (uris, callback) => {
 // Bad
 const readURIs = (uris, callback) => {
   let pending = uris.length;
-  // Using `let` to signify that output is going
-  // to be mutated.
-  let output = [];
+  const output = [];
   const count = uris.length;
   let index = 0;
   while (index < count) {
-    let id = index;
+    const id = index;
     // Defining functions with-in the functions is ok.
     readURI(uri, content => {
       output[id] = content;
@@ -555,14 +551,14 @@ xs.reduce((sum, x) => sum + x)
 
 // good
 let sum = 0;
-for (let x of xs)
+for (const x of xs)
   sum = sum + x
 
 // ok
 const count = xs.length;
 let index = 0;
 let sum = 0;
-while (index < count)
+while (index < count) // non-terminating loop left as an exercise to the reader ;)
   sum = sum + xs[index];
 
 // bad
